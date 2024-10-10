@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- <header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Product in Detail</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Welcome to Django Ecommerce</p>
+        </div>
+    </div>
+</header> -->
+<br><br/>
+<div class="container">
+    <div class="row">
+        <center>
+            <div class="col-8">
+                <p align="justify"> <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                      <div class="col-md-4">
+                        <img src="{{product.image.url}}" class="img-fluid rounded-start" alt="...">
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card-body">
+                          <h5 class="card-title">{{product.name}}</h5>
+                          <p class="card-text">{{product.description}}</p>
+                          <!-- <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div></p>
+            </div>
+        </center>
+    </div>
+</div>
+
+
+{% endblock %}
