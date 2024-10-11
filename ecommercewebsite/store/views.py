@@ -65,4 +65,4 @@ def category(request,foo):
         return render(request,'category.html',{'category':category,'products':products})
     except:
         messages.success(request,"No such category found.")
-        return render(request,'home.html')
+        return render(request,'home.html',{})
