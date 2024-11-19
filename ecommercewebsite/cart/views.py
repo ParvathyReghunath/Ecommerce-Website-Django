@@ -10,8 +10,8 @@ def cart_summary(request):
 def cart_add(request):
     cart = Cart(request)
     
-    if request.POST.get('action')=='POST':
-        product_id = request.POST.get('product_id')
+    if request.POST.get('action') == 'post':
+        product_id = int(request.POST.get('product_id'))
         product=get_object_or_404(Product, id=product_id)
         cart.add(product=product)
 

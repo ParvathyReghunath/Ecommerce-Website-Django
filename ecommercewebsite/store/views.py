@@ -54,7 +54,7 @@ def register_user(request):
 
 def product(request,pk):
     products=Product.objects.get(id=pk)
-    return render(request,'product.html',{'product':products})\
+    return render(request,'product.html',{'product':products})
 
 def category(request,foo):
     # foo=foo.replace('-',' ')

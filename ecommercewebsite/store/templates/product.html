@@ -23,8 +23,12 @@
                         <div class="card-body">
                           <h5 class="card-title">{{product.name}}</h5>
                           <p class="card-text">{{product.description}}</p>
-                          <p>{{product.price}}</p>
-                          <p>ID:{{product.id}}</p>
+                          {% if product.on_sale %}
+                                <strike>${{product.price}}</strike>  ${{product.sale_price}} 
+                          {% else %}
+                                ${{product.price}} 
+                          {% endif %}            
+                                <p>ID:{{product.id}}</p>
                           <!-- <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p> -->
                           <a href="{% url 'home' %}" class="btn btn-secondary">Home</a> 
                           <button type="button" class="btn btn-secondary" value="{{ product.id }}" id="add-cart">Add to cart</button>
@@ -38,7 +42,7 @@
 </div>
 
 <!-- when add to cart button is clicked javascript interprets the click event and makes ajax post request to django backend with that product id and csrf token.
- If teh server succesfully add items to cart response is logged to browser console. 
+ If the server succesfully add items to cart response is logged to browser console. 
  If there is an error ,error function would handle it  -->
 <script>
   $(document).on('click','#add-cart', function(e){
@@ -49,7 +53,7 @@
       data:{
         product_id: $('#add-cart').val(),
         csrfmiddlewaretoken: '{{ csrf_token }}',
-        action: 'post',
+        action: 'post'
 
       },
 
@@ -57,7 +61,7 @@
         console.log(json);
       },
 
-      error: function(xnr,errmsg,enr){
+      error: function(xhr,errmsg,enr){
 
       }
     })

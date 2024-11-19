@@ -12,12 +12,12 @@ class Cart():
         if 'session_key' not in request.session:
             cart=self.session['session_key']={}
 
-        # to access it in all pages
+        # to access it in all page
         self.cart=cart
 
 
     def add(self,product):
-        product_id=str(product.id)
+        product_id=str(product_id)
         if product_id in self.cart:
             pass
         else:
