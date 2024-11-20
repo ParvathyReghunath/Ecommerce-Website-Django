@@ -1,72 +1,94 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<!-- <header class="bg-dark py-5">
-    <div class="container px-4 px-lg-5 my-5">
-        <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Product in Detail</h1>
-            <p class="lead fw-normal text-white-50 mb-0">Welcome to Django Ecommerce</p>
-        </div>
-    </div>
-</header> -->
-<br><br/>
-<div class="container">
-    <div class="row">
-        <center>
-            <div class="col-8">
-                <p align="justify"> <div class="card mb-3" style="max-width: 540px;">
-                    <div class="row g-0">
-                      <div class="col-md-4">
-                        <img src="{{product.image.url}}" class="img-fluid rounded-start" alt="...">
-                      </div>
-                      <div class="col-md-8">
-                        <div class="card-body">
-                          <h5 class="card-title">{{product.name}}</h5>
-                          <p class="card-text">{{product.description}}</p>
-                          {% if product.on_sale %}
-                                <strike>${{product.price}}</strike>  ${{product.sale_price}} 
-                          {% else %}
-                                ${{product.price}} 
-                          {% endif %}            
-                                <p>ID:{{product.id}}</p>
-                          <!-- <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p> -->
-                          <a href="{% url 'home' %}" class="btn btn-secondary">Home</a> 
-                          <button type="button" class="btn btn-secondary" value="{{ product.id }}" id="add-cart">Add to cart</button>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Django-Ecommerce Website</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <!-- Navigation-->
+        {% include 'navbar.html' %}
+        
+        <!-- Product Detail Section-->
+        <br><br/>
+        <div class="container">
+            <div class="row">
+                <center>
+                    <div class="col-8">
+                        <div class="card mb-3" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="{{product.image.url}}" class="img-fluid rounded-start" alt="Product Image">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ product.name }}</h5>
+                                        <p class="card-text">{{ product.description }}</p>
+                                        {% if product.on_sale %}
+                                            <strike>${{ product.price }}</strike> ${{ product.sale_price }}
+                                        {% else %}
+                                            ${{ product.price }}
+                                        {% endif %}
+                                        <p>ID: {{ product.id }}</p>
+                                        <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
+                                        <button type="button" class="btn btn-secondary" value="{{ product.id }}" id="add-cart">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
                     </div>
-                  </div></p>
+                </center>
             </div>
-        </center>
-    </div>
-</div>
+        </div>
 
-<!-- when add to cart button is clicked javascript interprets the click event and makes ajax post request to django backend with that product id and csrf token.
- If the server succesfully add items to cart response is logged to browser console. 
- If there is an error ,error function would handle it  -->
-<script>
-  $(document).on('click','#add-cart', function(e){
-    e.preventDefault();
-    $.ajax({
-      type: 'POST',
-      url: '{% url "cart_add" %}',
-      data:{
-        product_id: $('#add-cart').val(),
-        csrfmiddlewaretoken: '{{ csrf_token }}',
-        action: 'post'
+        <!-- Footer-->
+        <br><br/><br><br/><br><br/>
+        <footer class="py-5 bg-dark">
+            <div class="container">
+                <p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p>
+            </div>
+        </footer>
 
-      },
-
-      success: function(json){
-        console.log(json);
-      },
-
-      error: function(xhr,errmsg,enr){
-
-      }
-    })
-  });
-</script>
-
-
-{% endblock %}
+        <!-- Scripts-->
+        <script>
+            $(document).ready(function() {
+                // Handle Add to Cart button click
+                $(document).on('click', '#add-cart', function(e) {
+                    e.preventDefault();
+                    
+                    // Show in console when clicked
+                    console.log("Add to Cart button clicked!");
+                    
+                    // Make the AJAX request
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "cart_add" %}',
+                        data: {
+                            product_id: $(this).val(),
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            action: 'post'
+                        },
+                        success: function(json) {
+                            // Log response in the console
+                            console.log("Product added to cart: ", json);
+                        },
+                        error: function(xhr, errmsg, err) {
+                            console.error('Error:', errmsg);
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -17,7 +17,7 @@ class Cart():
 
 
     def add(self,product):
-        product_id=str(product_id)
+        product_id=str(product.id)
         if product_id in self.cart:
             pass
         else:
