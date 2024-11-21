@@ -9,7 +9,7 @@ def cart_summary(request):
 
 def cart_add(request):
     cart = Cart(request)
-    print("cart_add view called")
+    # print("cart_add view called")
     
     if request.POST.get('action') == 'post':
         # print("post action is post")
@@ -19,7 +19,8 @@ def cart_add(request):
             return JsonResponse({'error': 'Product ID is missing'}, status=400)
         product=get_object_or_404(Product, id=product_id)
         cart.add(product=product)
-
+        cart_quantity=cart.__len__()
+        response=JsonResponse({'qty' : cart_quantity})
         response=JsonResponse({'Product Name' : product.name})
         return response
 
