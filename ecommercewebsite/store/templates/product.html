@@ -40,6 +40,22 @@
                                         {% else %}
                                             ${{ product.price }}
                                         {% endif %}
+                                        <div class="row justify-content-center align-items-center mt-3">
+                                            <!-- Label for Quantity -->
+                                            <div class="col-auto">
+                                                <label for="quantity" class="form-label">Quantity:</label>
+                                            </div>
+                                            <!-- Dropdown -->
+                                            <div class="col-auto">
+                                                <select id="qty-cart" class="form-select form-select-sm" >
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <!-- <p>ID: {{ product.id }}</p> -->
                                         <br><br/>                                      
                                         <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
@@ -82,6 +98,7 @@
                         url: '{% url "cart_add" %}',
                         data: {
                             product_id: $(this).val(),
+                            product_qty:$('#qty-cart option:selected').text(),
                             csrfmiddlewaretoken: '{{ csrf_token }}',
                             action: 'post'
                         },
