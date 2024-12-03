@@ -63,6 +63,7 @@
                                     <br><br/>                                      
                                     <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
                                     <button type="button" data-index="{{product.id}}" class="btn btn-secondary update-cart">Update</button>
+                                    <button type="button" data-index="{{product.id}}" class="btn btn-danger delete-cart">Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -82,10 +83,13 @@
 
 
     <script>
-        console.log("JavaScript loaded!");
+
+        //Update 
+
+        console.log("JavaScript loaded of update!");
         $(document).ready(function() {
             // Handle Add to Cart button click. 
-            // Since update-cart is a class use . instead of # ie .update-cart
+            // Since update-cart is a class use '.' instead of '#' ie .update-cart
             $(document).on('click', '.update-cart', function(e) {
                 e.preventDefault();
                 
@@ -107,6 +111,42 @@
                         // Log response in the console
                         
                     console.log("Update button clicked and response received:", json);
+                    location.reload();
+                    },
+                    error: function(xhr, errmsg, err) {
+                        console.error('Error:', errmsg);
+                    }
+                });
+            });
+        });
+
+
+        //Delete
+
+        console.log("JavaScript loaded of delete!");
+        $(document).ready(function() {
+            // Handle Add to Cart button click. 
+            // Since update-cart is a class use '.' instead of '#' ie .update-cart
+            $(document).on('click', '.delete-cart', function(e) {
+                e.preventDefault();
+                
+                var productid = $(this).data('index');
+
+                // Show in console when clicked
+                console.log("Delete button clicked for product ID:", productid);
+                // Make the AJAX request
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "cart_delete" %}',
+                    data: {
+                        product_id: $(this).data('index'),
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        action: 'post'
+                    },
+                    success: function(json) {
+                        // Log response in the console
+                        
+                    console.log("Delete button clicked and response received:", json);
                     location.reload();
                     },
                     error: function(xhr, errmsg, err) {
