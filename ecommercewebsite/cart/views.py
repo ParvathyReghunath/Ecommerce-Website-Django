@@ -28,36 +28,20 @@ def cart_add(request):
         response=JsonResponse({'Product Name' : product.name})
         return response
 
-  
 
-# def cart_add(request):
-#     cart = Cart(request)
-
-#     if request.POST.get('action') == 'post':
-#         # Retrieve product ID from POST data
-#         product_id = request.POST.get('product_id')
-#         if not product_id:
-#             return JsonResponse({'error': 'Product ID is missing'}, status=400)
-
-#         try:
-#             # Fetch the product from the database
-#             product = get_object_or_404(Product, id=product_id)
-#             cart.add(product=product)
-
-#             # Respond with success
-#             return JsonResponse({'Product Name': product.name})
-
-#         except Product.DoesNotExist:
-#             return JsonResponse({'error': 'Product not found'}, status=404)
-
-#         except Exception as e:
-#             return JsonResponse({'error': str(e)}, status=500)
-#     else:
-#         return JsonResponse({'error': 'Invalid action'}, status=400)
 
     
 def cart_update(request):
-    pass
+    cart = Cart(request)        
+    if request.POST.get('action') == 'post':
+        print("entered update")
+        product_id = request.POST.get('product_id')
+        product_qty=request.POST.get('product_qty')
+        
+        cart.update(product=product_id, quantity=product_qty)
+        response=JsonResponse({'qty' : product_qty})
+        return response
+
 
 def cart_delete(request):
     pass

@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
         
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <!-- Header-->
 <header class="bg-dark py-5">
@@ -12,6 +13,7 @@
         </div>
     </div>
 </header>
+
 <br><br/>
 <div class="container">
     {% if cart_products %}
@@ -41,7 +43,7 @@
                                         </div>
                                         <!-- Dropdown -->
                                         <div class="col-auto">
-                                            <select id="qty-cart" class="form-select form-select-sm" >
+                                            <select class="form-select form-select-sm" id="select{{product.id}}">
                                                 <option selected>
                                                     {% for key,value in quantities.items%}
                                                         {% if key == product.id|slugify %}
@@ -60,6 +62,7 @@
                                     <!-- <p>ID: {{ product.id }}</p> -->
                                     <br><br/>                                      
                                     <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
+                                    <button type="button" data-index="{{product.id}}" class="btn btn-secondary update-cart">Update</button>
                                 </div>
                             </div>
                         </div>
@@ -76,4 +79,42 @@
 </div>
 
         
+
+
+    <script>
+        console.log("JavaScript loaded!");
+        $(document).ready(function() {
+            // Handle Add to Cart button click. 
+            // Since update-cart is a class use . instead of # ie .update-cart
+            $(document).on('click', '.update-cart', function(e) {
+                e.preventDefault();
+                
+                var productid = $(this).data('index');
+
+                // Show in console when clicked
+                console.log("Update button clicked for product ID:", productid);
+                // Make the AJAX request
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "cart_update" %}',
+                    data: {
+                        product_id: $(this).data('index'),
+                        product_qty:$('#select' + productid + ' option:selected').text(),
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        action: 'post'
+                    },
+                    success: function(json) {
+                        // Log response in the console
+                        
+                    console.log("Update button clicked and response received:", json);
+                    location.reload();
+                    },
+                    error: function(xhr, errmsg, err) {
+                        console.error('Error:', errmsg);
+                    }
+                });
+            });
+        });
+    </script>
+
 {% endblock %}
